@@ -1,0 +1,33 @@
+/* style.css - Custom Styles & Print formatting */
+.font-kantumruy {
+  font-family: 'Kantumruy Pro', sans-serif;
+}
+
+.font-moul {
+  font-family: 'Moul', cursive;
+}
+
+/* Print Specific Styling */
+@media print {
+  body {
+    background-color: white !important;
+    font-size: 11pt !important;
+  }
+  header, footer, #lessonForm, .lg\:col-span-5, #actionButtons, #apiKeyModal, #btnApiKeyModal {
+    display: none !important;
+  }
+  .lg\:col-span-7 {
+    width: 100% !important;
+  }
+  .print-area {
+    display: block !important;
+  }
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+  th, td {
+    border: 1px solid #000 !important;
+    padding: 6px !important;
+  }
+}

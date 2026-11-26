@@ -21,11 +21,12 @@ module.exports = async (req, res) => {
   try {
     const { subject, grade, chapter, lesson_title, duration, notes, custom_api_key } = req.body;
 
+    // ទទួល Key ពី Environment Variable ឬ ពី User បញ្ចូលផ្ទាល់លើ UI
     const apiKey = custom_api_key || process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
       return res.status(400).json({
-        error: 'សូមបញ្ចូល Gemini API Key នៅក្នុងប្រព័ន្ធ ឬ ផ្ទាំងបញ្ចូល API Key ផ្ទាល់ខ្លួន!'
+        error: 'សូមបញ្ចូល Gemini API Key នៅក្នុង Vercel Environment Variables ឬ លើប៊ូតុង "🔑 កំណត់ API Key" លើផ្ទាំង Web App!'
       });
     }
 
@@ -34,8 +35,6 @@ module.exports = async (req, res) => {
         error: 'សូមបំពេញព័ត៌មានចាំបាច់ (មុខវិជ្ជា, ថ្នាក់, និងចំណងជើងមេរៀន)!'
       });
     }
-
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const systemInstruction = `អ្នកគឺជាអ្នកជំនាញវិធីសាស្រ្តបង្រៀន និងរៀបចំកិច្ចតែងការបង្រៀនគរុកោសល្យស្តង់ដារនៃក្រសួងអប់រំ យុវជន និងកីឡានៃព្រះរាជាណាចក្រកម្ពុជា (ជាពិសេសស្តង់ដារសាលារៀនជំនាន់ថ្មី NGS)។
 ចូររៀបចំកិច្ចតែងការបង្រៀនជាភាសាខ្មែរឱ្យបានលម្អិត ត្រឹមត្រូវតាមកម្រិតថ្នាក់ និងមុខវិជ្ជា ដោយអនុវត្តតាមលំនាំ ៥ ជំហាននៃការបង្រៀន៖
@@ -119,20 +118,38 @@ module.exports = async (req, res) => {
       }
     };
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    // ប្រើ Model ដែលដំណើរការលឿន និងមានស្ថេរភាពខ្ពស់បំផុត
+    const candidateModels = ['gemini-3.5-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
+    let lastError = null;
+    let data = null;
 
-    if (!response.ok) {
-      const errText = await response.text();
-      return res.status(response.status).json({
-        error: `កំហុសពី Gemini API (${response.status}): ${errText}`
+    for (const model of candidateModels) {
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          data = await response.json();
+          break;
+        } else {
+          const errText = await response.text();
+          lastError = `Model ${model} error (${response.status}): ${errText}`;
+        }
+      } catch (e) {
+        lastError = e.message;
+      }
+    }
+
+    if (!data) {
+      return res.status(500).json({
+        error: `កំហុសក្នុងការបង្កើតកិច្ចតែងការ៖ ${lastError || 'Server Unavailable'}`
       });
     }
 
-    const data = await response.json();
     const rawJson = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!rawJson) {

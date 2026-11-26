@@ -4,6 +4,7 @@
   "description": "ប្រព័ន្ធរៀបចំកិច្ចតែងការបង្រៀនស្វ័យប្រវត្តិតាមស្តង់ដារក្រសួងអប់រំ យុវជន និងកីឡា ដោយប្រើប្រាស់ Gemini AI",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'Build OK'",
     "start": "node server.js",
     "dev": "node server.js"
   },
