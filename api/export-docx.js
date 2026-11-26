@@ -36,23 +36,23 @@ module.exports = async (req, res) => {
         tableHeader: true,
         children: [
           new TableCell({
-            width: { size: 1500, type: WidthType.DXA },
-            shading: { fill: 'EFEFEF' },
+            width: { size: 1400, type: WidthType.DXA },
+            shading: { fill: 'E2E8F0' },
             children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'ពេលវេលា', font: FONT_BODY, bold: true, size: 20 })] })]
           }),
           new TableCell({
-            width: { size: 2500, type: WidthType.DXA },
-            shading: { fill: 'EFEFEF' },
+            width: { size: 2600, type: WidthType.DXA },
+            shading: { fill: 'E2E8F0' },
             children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'ខ្លឹមសារមេរៀន', font: FONT_BODY, bold: true, size: 20 })] })]
           }),
           new TableCell({
             width: { size: 2800, type: WidthType.DXA },
-            shading: { fill: 'EFEFEF' },
+            shading: { fill: 'E2E8F0' },
             children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'សកម្មភាពគ្រូ', font: FONT_BODY, bold: true, size: 20 })] })]
           }),
           new TableCell({
             width: { size: 2800, type: WidthType.DXA },
-            shading: { fill: 'EFEFEF' },
+            shading: { fill: 'E2E8F0' },
             children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'សកម្មភាពសិស្ស', font: FONT_BODY, bold: true, size: 20 })] })]
           })
         ]
@@ -61,18 +61,18 @@ module.exports = async (req, res) => {
 
     if (data.steps && Array.isArray(data.steps)) {
       for (const step of data.steps) {
-        // ចំណងជើងជំហាន (Row បញ្ចូល ៤ Cells)
+        // ចំណងជើងជំហាន
         tableRows.push(
           new TableRow({
             children: [
               new TableCell({
                 columnSpan: 4,
-                shading: { fill: 'F3F4F6' },
+                shading: { fill: 'EFF6FF' },
                 children: [
                   new Paragraph({
                     children: [
                       new TextRun({
-                        text: `${step.step_title} (${step.time_allocated})`,
+                        text: `📌 ${step.step_title} (${step.time_allocated})`,
                         font: FONT_BODY,
                         bold: true,
                         size: 20
@@ -85,18 +85,18 @@ module.exports = async (req, res) => {
           })
         );
 
-        // បញ្ចូលសកម្មភាពនីមួយៗក្នុងជំហាន
+        // សកម្មភាពក្នុងជំហាននីមួយៗ
         if (step.activities && Array.isArray(step.activities)) {
           for (const act of step.activities) {
             tableRows.push(
               new TableRow({
                 children: [
                   new TableCell({
-                    width: { size: 1500, type: WidthType.DXA },
+                    width: { size: 1400, type: WidthType.DXA },
                     children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: step.time_allocated || '', font: FONT_BODY, size: 19 })] })]
                   }),
                   new TableCell({
-                    width: { size: 2500, type: WidthType.DXA },
+                    width: { size: 2600, type: WidthType.DXA },
                     children: [new Paragraph({ children: [new TextRun({ text: act.content || '', font: FONT_BODY, size: 19 })] })]
                   }),
                   new TableCell({
@@ -115,6 +115,155 @@ module.exports = async (req, res) => {
       }
     }
 
+    const docChildren = [
+      // ក្បាលទំព័រជាតិ និងសាលារៀន
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: 'ព្រះរាជាណាចក្រកម្ពុជា', font: FONT_TITLE, bold: true, size: 22 })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: 'ជាតិ សាសនា ព្រះមហាក្សត្រ', font: FONT_TITLE, bold: true, size: 22 })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: '---***---', font: FONT_BODY, size: 18 })]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: `សាលារៀន៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.school_name || 'វិទ្យាល័យ ហ៊ុន សែន សេរីភាព'}`, font: FONT_BODY, size: 20 }),
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: `គ្រូបង្រៀន៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.teacher_name || '...........................................'}       `, font: FONT_BODY, size: 20 }),
+          new TextRun({ text: `កាលបរិច្ឆេទ៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.teaching_date || ''}`, font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({ text: '' }),
+
+      // ចំណងជើងកិច្ចតែងការ
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: 'កិច្ចតែងការបង្រៀន', font: FONT_TITLE, bold: true, size: 26 })]
+      }),
+      new Paragraph({ text: '' }),
+
+      // ព័ត៌មានទូទៅ
+      new Paragraph({
+        children: [
+          new TextRun({ text: `មុខវិជ្ជា៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.subject || ''}       `, font: FONT_BODY, size: 20 }),
+          new TextRun({ text: `ថ្នាក់ទី៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.grade || ''} ${meta.class_section ? `(${meta.class_section})` : ''}       `, font: FONT_BODY, size: 20 }),
+          new TextRun({ text: `ម៉ោងបង្រៀន៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.period || 'ម៉ោងទី១'} (រយៈពេល ${meta.duration || 50} នាទី)`, font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: `ជំពូកទី៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.chapter || ''}`, font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: `មេរៀនទី / ចំណងជើង៖ `, font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: `${meta.lesson_title || ''}`, font: FONT_BODY, bold: true, size: 20 })
+        ]
+      })
+    ];
+
+    if (meta.sub_topics) {
+      docChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: `ខ្លឹមសាររង / ចំណុចសំខាន់៖ `, font: FONT_BODY, bold: true, size: 20 }),
+            new TextRun({ text: `${meta.sub_topics}`, font: FONT_BODY, size: 20 })
+          ]
+        })
+      );
+    }
+
+    if (meta.teaching_method) {
+      docChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: `វិធីសាស្ត្របង្រៀន៖ `, font: FONT_BODY, bold: true, size: 20 }),
+            new TextRun({ text: `${meta.teaching_method}`, font: FONT_BODY, size: 20 })
+          ]
+        })
+      );
+    }
+
+    if (meta.textbook_ref) {
+      docChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: `ឯកសារយោង៖ `, font: FONT_BODY, bold: true, size: 20 }),
+            new TextRun({ text: `${meta.textbook_ref}`, font: FONT_BODY, size: 20 })
+          ]
+        })
+      );
+    }
+
+    docChildren.push(
+      new Paragraph({ text: '' }),
+      // វត្ថុបំណង
+      new Paragraph({
+        children: [new TextRun({ text: 'I. វត្ថុបំណង', font: FONT_TITLE, bold: true, size: 22 })]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: '• ចំណេះដឹង៖ ', font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: data.objectives?.knowledge || '', font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: '• បំណិន៖ ', font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: data.objectives?.skills || '', font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: '• ឥរិយាបថ៖ ', font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: data.objectives?.attitudes || '', font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({ text: '' }),
+
+      // សម្ភារឧបទេស
+      new Paragraph({
+        children: [new TextRun({ text: 'II. សម្ភារឧបទេស និងបច្ចេកវិទ្យា', font: FONT_TITLE, bold: true, size: 22 })]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: '• សម្រាប់គ្រូ៖ ', font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: data.materials?.teacher || '', font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: '• សម្រាប់សិស្ស៖ ', font: FONT_BODY, bold: true, size: 20 }),
+          new TextRun({ text: data.materials?.student || '', font: FONT_BODY, size: 20 })
+        ]
+      }),
+      new Paragraph({ text: '' }),
+
+      // ដំណើរការបង្រៀន
+      new Paragraph({
+        children: [new TextRun({ text: 'III. ដំណើរការបង្រៀន (ដំណាក់កាល ៥ ជំហាន)', font: FONT_TITLE, bold: true, size: 22 })]
+      }),
+      new Table({
+        width: { size: 9600, type: WidthType.DXA },
+        rows: tableRows
+      })
+    );
+
     const doc = new Document({
       sections: [
         {
@@ -128,105 +277,7 @@ module.exports = async (req, res) => {
               }
             }
           },
-          children: [
-            // ក្បាលទំព័រជាតិ
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: 'ព្រះរាជាណាចក្រកម្ពុជា', font: FONT_TITLE, bold: true, size: 22 })]
-            }),
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: 'ជាតិ សាសនា ព្រះមហាក្សត្រ', font: FONT_TITLE, bold: true, size: 22 })]
-            }),
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: '---***---', font: FONT_BODY, size: 20 })]
-            }),
-            new Paragraph({ text: '' }),
-
-            // ចំណងជើងកិច្ចតែងការ
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: 'កិច្ចតែងការបង្រៀន', font: FONT_TITLE, bold: true, size: 26 })]
-            }),
-            new Paragraph({ text: '' }),
-
-            // ព័ត៌មានទូទៅ
-            new Paragraph({
-              children: [
-                new TextRun({ text: `មុខវិជ្ជា៖ `, font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: `${meta.subject || ''}       `, font: FONT_BODY, size: 20 }),
-                new TextRun({ text: `ថ្នាក់ទី៖ `, font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: `${meta.grade || ''}       `, font: FONT_BODY, size: 20 }),
-                new TextRun({ text: `រយៈពេល៖ `, font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: `${meta.duration || 50} នាទី`, font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: `ជំពូកទី៖ `, font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: `${meta.chapter || ''}`, font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: `មេរៀនទី / ចំណងជើង៖ `, font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: `${meta.lesson_title || ''}`, font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({ text: '' }),
-
-            // វត្ថុបំណង
-            new Paragraph({
-              children: [new TextRun({ text: 'I. វត្ថុបំណង', font: FONT_TITLE, bold: true, size: 22 })]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: '• ចំណេះដឹង៖ ', font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: data.objectives?.knowledge || '', font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: '• បំណិន៖ ', font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: data.objectives?.skills || '', font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: '• ឥរិយាបថ៖ ', font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: data.objectives?.attitudes || '', font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({ text: '' }),
-
-            // សម្ភារឧបទេស
-            new Paragraph({
-              children: [new TextRun({ text: 'II. សម្ភារឧបទេស', font: FONT_TITLE, bold: true, size: 22 })]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: '• សម្រាប់គ្រូ៖ ', font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: data.materials?.teacher || '', font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: '• សម្រាប់សិស្ស៖ ', font: FONT_BODY, bold: true, size: 20 }),
-                new TextRun({ text: data.materials?.student || '', font: FONT_BODY, size: 20 })
-              ]
-            }),
-            new Paragraph({ text: '' }),
-
-            // ដំណើរការបង្រៀន
-            new Paragraph({
-              children: [new TextRun({ text: 'III. ដំណើរការបង្រៀន (ដំណាក់កាល ៥ ជំហាន)', font: FONT_TITLE, bold: true, size: 22 })]
-            }),
-            new Table({
-              width: { size: 9600, type: WidthType.DXA },
-              rows: tableRows
-            })
-          ]
+          children: docChildren
         }
       ]
     });
