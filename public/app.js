@@ -2,6 +2,11 @@
 let currentLessonData = null;
 let currentMeta = null;
 
+// Initialize PDF.js worker
+if (window.pdfjsLib) {
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
 // Presets data with full pedagogical rich content
 const presets = {
   physics: {
@@ -167,7 +172,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const actionButtons = document.getElementById('actionButtons');
   const btnExportDocx = document.getElementById('btnExportDocx');
   const btnPrint = document.getElementById('btnPrint');
+
+  // File Upload and Textarea elements
+  const dropZone = document.getElementById('dropZone');
   const fileUpload = document.getElementById('fileUpload');
+  const fileStatus = document.getElementById('fileStatus');
+  const lessonContentArea = document.getElementById('lesson_content');
+  const charCount = document.getElementById('charCount');
+  const textbookRefInput = document.getElementById('textbook_ref');
 
   // API Key Modal Elements
   const btnApiKeyModal = document.getElementById('btnApiKeyModal');
@@ -181,6 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (teachingDateInput && !teachingDateInput.value) {
     teachingDateInput.value = new Date().toISOString().split('T')[0];
   }
+
+  // Update char count
+  function updateCharCount() {
+    const len = lessonContentArea.value.length;
+    charCount.textContent = `${len.toLocaleString('km-KH')} តួអក្សរ`;
+  }
+  lessonContentArea.addEventListener('input', updateCharCount);
 
   // Load saved API Key from localStorage
   const savedKey = localStorage.getItem('gemini_api_key');
@@ -208,23 +227,114 @@ document.addEventListener('DOMContentLoaded', () => {
     apiKeyModal.classList.add('hidden');
   });
 
-  // Handle File Upload (.txt or .md)
-  if (fileUpload) {
-    fileUpload.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+  // ==========================================
+  // FILE PROCESSING: PDF, Word (.docx), & Text
+  // ==========================================
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target.result;
-        const lessonContentArea = document.getElementById('lesson_content');
-        if (lessonContentArea) {
-          lessonContentArea.value = text;
-          alert(`📥 បានបញ្ចូលខ្លឹមសារពីឯកសារ "${file.name}" ដោយជោគជ័យ!`);
-        }
-      };
-      reader.readAsText(file);
+  // Click on dropzone triggers hidden file input
+  dropZone.addEventListener('click', () => {
+    fileUpload.click();
+  });
+
+  // Drag & Drop visual effects
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add('border-emerald-600', 'bg-emerald-100/50');
     });
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove('border-emerald-600', 'bg-emerald-100/50');
+    });
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    if (files.length > 0) {
+      processFile(files[0]);
+    }
+  });
+
+  fileUpload.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      processFile(e.target.files[0]);
+    }
+  });
+
+  async function processFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    showFileStatus(`⏳ កំពុងដំណើរការអានឯកសារ "${file.name}"...`, 'loading');
+
+    try {
+      let extractedText = '';
+
+      if (ext === 'pdf') {
+        // PDF EXTRACTION VIA PDF.JS
+        if (!window.pdfjsLib) {
+          throw new Error('បណ្ណាល័យ PDF.js មិនទាន់ដំណើរការ!');
+        }
+        const arrayBuffer = await file.arrayBuffer();
+        const loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
+        const pdf = await loadingTask.promise;
+        const totalPages = pdf.numPages;
+
+        for (let i = 1; i <= totalPages; i++) {
+          showFileStatus(`⏳ កំពុងទាញយកអត្ថបទពី PDF... (ទំព័រ ${i}/${totalPages})`, 'loading');
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageStrings = textContent.items.map(item => item.str);
+          extractedText += `\n[--- ទំព័រទី ${i} ---]\n` + pageStrings.join(' ') + '\n';
+        }
+      } else if (ext === 'docx') {
+        // WORD DOCX EXTRACTION VIA MAMMOTH.JS
+        if (!window.mammoth) {
+          throw new Error('បណ្ណាល័យ Mammoth.js មិនទាន់ដំណើរការ!');
+        }
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await window.mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+        extractedText = result.value;
+      } else if (ext === 'txt' || ext === 'md') {
+        // PLAIN TEXT EXTRACTION
+        extractedText = await file.text();
+      } else {
+        throw new Error('សូមជ្រើសរើសឯកសារជាទម្រង់ .PDF, .DOCX (Word) ឬ .TXT');
+      }
+
+      if (!extractedText || extractedText.trim().length === 0) {
+        throw new Error('ពុំមានអត្ថបទដែលអាចទាញយកបានពីឯកសារនេះទេ (ឯកសារប្រហែលជាមានតែរូបភាព Scan)');
+      }
+
+      // Populate Textarea and Textbook reference
+      lessonContentArea.value = extractedText.trim();
+      updateCharCount();
+
+      if (!textbookRefInput.value) {
+        textbookRefInput.value = `ឯកសារយោង៖ ${file.name}`;
+      }
+
+      showFileStatus(`✅ បានទាញយកខ្លឹមសារពីឯកសារ "${file.name}" ដោយជោគជ័យ (${extractedText.length.toLocaleString('km-KH')} តួអក្សរ)`, 'success');
+    } catch (err) {
+      console.error('File Read Error:', err);
+      showFileStatus(`❌ ${err.message}`, 'error');
+    }
+  }
+
+  function showFileStatus(msg, type) {
+    fileStatus.classList.remove('hidden', 'bg-blue-50', 'text-blue-800', 'bg-emerald-50', 'text-emerald-800', 'bg-red-50', 'text-red-800');
+    if (type === 'loading') {
+      fileStatus.classList.add('bg-blue-50', 'text-blue-800');
+    } else if (type === 'success') {
+      fileStatus.classList.add('bg-emerald-50', 'text-emerald-800');
+    } else {
+      fileStatus.classList.add('bg-red-50', 'text-red-800');
+    }
+    fileStatus.innerHTML = `<span>${msg}</span>`;
   }
 
   // Handle Preset selection
@@ -246,6 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('tech_tools').value = p.tech_tools || '';
       document.getElementById('textbook_ref').value = p.textbook_ref || '';
       document.getElementById('lesson_content').value = p.lesson_content || '';
+      updateCharCount();
+      fileStatus.classList.add('hidden');
     }
   });
 
