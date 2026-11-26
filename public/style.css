@@ -1,33 +1,116 @@
-/* style.css - Custom Styles & Print formatting */
+/* style.css - Custom Fonts, UI & Print Formatting */
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&display=swap');
+
 .font-kantumruy {
-  font-family: 'Kantumruy Pro', sans-serif;
+  font-family: 'Kantumruy Pro', 'Khmer OS Siemreap', sans-serif;
 }
 
 .font-moul {
-  font-family: 'Moul', cursive;
+  font-family: 'Moul', 'Khmer OS Muol Light', cursive;
 }
 
-/* Print Specific Styling */
+/* Print Specific Rules for Official Document Standard */
 @media print {
-  body {
-    background-color: white !important;
-    font-size: 11pt !important;
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 15mm 12mm;
   }
-  header, footer, #lessonForm, .lg\:col-span-5, #actionButtons, #apiKeyModal, #btnApiKeyModal {
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'Khmer OS Siemreap', 'Kantumruy Pro', sans-serif !important;
+  }
+
+  /* Hide all interactive elements */
+  header,
+  footer,
+  #lessonForm,
+  .lg\:col-span-5,
+  #actionButtons,
+  #apiKeyModal,
+  #btnApiKeyModal,
+  #presetSelect,
+  #dropZone,
+  #fileStatus,
+  .no-print {
     display: none !important;
   }
+
+  /* Make preview container take 100% full width */
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .lg\:col-span-7 {
     width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
+
+  .bg-white {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
   .print-area {
     display: block !important;
+    width: 100% !important;
+    color: #000000 !important;
   }
+
+  /* Official Tables Printing */
   table {
     border-collapse: collapse !important;
     width: 100% !important;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
   }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
   th, td {
-    border: 1px solid #000 !important;
-    padding: 6px !important;
+    border: 1px solid #000000 !important;
+    padding: 5px 8px !important;
+    color: #000000 !important;
+    background-color: transparent !important;
+  }
+
+  th {
+    background-color: #f0f0f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .step-header-cell {
+    background-color: #f7f7f7 !important;
+    font-weight: bold !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Prevent Signatures from splitting */
+  .signature-section {
+    page-break-inside: avoid !important;
+    margin-top: 25px !important;
+  }
+
+  /* Force background colors on print if supported */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }

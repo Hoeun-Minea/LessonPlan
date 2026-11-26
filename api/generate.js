@@ -20,22 +20,19 @@ module.exports = async (req, res) => {
 
   try {
     const {
-      teacher_name,
-      school_name,
+      date,
+      duration,
       subject,
       grade,
-      class_section,
-      period,
-      duration,
-      teaching_date,
       chapter,
       lesson_title,
-      sub_topics,
+      section,
+      page,
       teaching_method,
-      tech_tools,
-      textbook_ref,
+      materials_teacher,
+      materials_student,
       lesson_content,
-      notes,
+      teacher_name,
       custom_api_key
     } = req.body;
 
@@ -49,39 +46,58 @@ module.exports = async (req, res) => {
 
     if (!subject || !grade || !lesson_title) {
       return res.status(400).json({
-        error: 'សូមបំពេញព័ត៌មានចាំបាច់ (មុខវិជ្ជា, ថ្នាក់, និងចំណងជើងមេរៀន)!'
+        error: 'សូមបំពេញព័ត៌មានចាំបាច់ (មុខវិជ្ជា, ថ្នាក់ទី, និងមេរៀនទី/ចំណងជើង)!'
       });
     }
 
-    const systemInstruction = `អ្នកគឺជាអ្នកជំនាញជាន់ខ្ពស់ផ្នែកវិធីសាស្រ្តបង្រៀន និងគរុកោសល្យនៃក្រសួងអប់រំ យុវជន និងកីឡានៃព្រះរាជាណាចក្រកម្ពុជា (ជាពិសេសស្តង់ដារសាលារៀនជំនាន់ថ្មី New Generation School - NGS)។
-ភារកិច្ចរបស់អ្នក៖
-១. រៀបចំកិច្ចតែងការបង្រៀនជាភាសាខ្មែរឱ្យមានលក្ខណៈគរុកោសល្យច្បាស់លាស់ ស៊ីជម្រៅ ស្របតាមកម្រិតថ្នាក់ និងមុខវិជ្ជា។
-២. អនុវត្តតាមលំនាំ ៥ ជំហាននៃការបង្រៀន (ដំណាក់កាលបង្រៀនផ្លូវការ)៖
-   - ជំហានទី១៖ រដ្ឋបាលថ្នាក់ (ពិនិត្យអនាម័យ វត្តមាន និងវិន័យ)
-   - ជំហានទី២៖ រំលឹកមេរៀនចាស់ ឬត្រួតពិនិត្យកិច្ចការផ្ទះ (មានសំណួរសួរ និងចម្លើយរំពឹងទុក)
-   - ជំហានទី៣៖ ទំនាក់ទំនងមេរៀនថ្មី និងដំណើរការបង្រៀនខ្លឹមសារ (បែងចែកសកម្មភាពគ្រូ និងសកម្មភាពសិស្សឱ្យច្បាស់លាស់ ផ្អែកលើវិធីសាស្ត្របង្រៀនដែលបានជ្រើសរើស)
-   - ជំហានទី៤៖ ពង្រឹងចំណេះដឹង (លំហាត់អនុវត្ត សំណួរបំផុស ឬការវាយតម្លៃលទ្ធផលសិក្សា)
-   - ជំហានទី៥៖ បណ្តាំផ្ញើ និងកិច្ចការផ្ទះ (ការផ្តាំផ្ញើឱ្យរំលឹកមេរៀន និងកិច្ចការស្រាវជ្រាវ)
-៣. វត្ថុបំណងត្រូវបែងចែកជា ៣ ប្រការច្បាស់លាស់៖ ចំណេះដឹង, បំណិន, និង ឥរិយាបថ (ប្រើពាក្យសកម្មភាពវាស់វែងបានដូចជា៖ កំណត់បាន, ពន្យល់បាន, គណនាបាន, អនុវត្តបាន, បង្ហាញពីស្មារតី...)។
-៤. [សំខាន់បំផុត] ប្រសិនបើមាន «ខ្លឹមសារមេរៀនដកស្រង់ ឬ ឯកសារយោង» ផ្ញើមកជាមួយ អ្នកត្រូវតែផ្អែកលើខ្លឹមសារនោះ ១០០% ដោយដកស្រង់និយមន័យ រូបមន្ត ឧទាហរណ៍ និងលំហាត់ជាក់ស្ដែងមកដាក់ក្នុងកិច្ចតែងការ មិនត្រូវប្រឌិតខុសពីសៀវភៅពុម្ពឡើយ។`;
+    const systemInstruction = `អ្នកគឺជាអ្នកជំនាញគរុកោសល្យ និងវិធីសាស្ត្របង្រៀននៃវិទ្យាល័យ ហ៊ុន សែន សេរីភាព (វិ.ហ.ស.សេរីភាព)។
+ភារកិច្ចរបស់អ្នកគឺរៀបចំកិច្ចតែងការបង្រៀនឱ្យស្របតាមទម្រង់ផ្លូវការគំរូរបស់សាលា ១០០%៖
+១. ក្បាលកិច្ចតែងការ៖
+   - កាលបរិច្ឆេទ ៖
+   - រយៈពេលបង្រៀន ៖
+   - មុខវិជ្ជា ៖
+   - ថ្នាក់ទី ៖
+   - ជំពូកទី ៖
+   - មេរៀនទី ៖
+   - ផ្នែកទី ៖
+   - ទំព័រ ៖
+   - វិធីសាស្ត្របង្រៀន ៖
 
-    let promptText = `សូមបង្កើតកិច្ចតែងការបង្រៀនតាមទិន្នន័យលម្អិតដូចខាងក្រោម៖
-- ឈ្មោះគ្រូបង្រៀន៖ ${teacher_name || 'លោកគ្រូ/អ្នកគ្រូ'}
-- ឈ្មោះសាលារៀន៖ ${school_name || 'វិទ្យាល័យ ហ៊ុន សែន សេរីភាព'}
+២. វត្ថុបំណងនៃមេរៀន (បន្ទាប់ពីបញ្ចប់មេរៀន សិស្សនឹងអាច៖) ត្រូវបែងចែកជា ៣ សម្បទា៖
+   - វិជ្ជាសម្បទា ៖ (ចំណេះដឹងដែលសិស្សទទួលបាន ច្បាស់លាស់ វាស់វែងបាន)
+   - បំណិនសម្បទា ៖ (សមត្ថភាពអនុវត្ត ការគណនា ការដោះស្រាយបញ្ហា)
+   - ចរិយាសម្បទា ៖ (ស្មារតី ការសហការ ទំនួលខុសត្រូវ គុណធម៌ សីលធម៌)
+
+៣. សម្ភារឧបទេស៖
+   - គ្រូ ៖ សៀវភៅពុម្ព ស្លាយមេរៀន កុំព្យូទ័រ ហ្វឺត បន្ទាត់ ឬឧបករណ៍ពិសោធន៍...
+   - សិស្ស ៖ សៀវភៅពុម្ព កុំព្យូទ័រ ប៊ិច សៀវភៅសរសេរ បន្ទាត់...
+
+៤. ដំណើរការបង្រៀន មាន ៣ ជួរឈរ (Columns)៖
+   [ សកម្មភាពគ្រូ | ខ្លឹមសារមេរៀន | សកម្មភាពសិស្ស ]
+   និងត្រូវអនុវត្តតាម ៥ ជំហាន៖
+   - ជំហានទី ១ លំនឹងថ្នាក់
+   - ជំហានទី ២ រំលឹកមេរៀនចាស់ (មានសំណួរសួរ និងចម្លើយរំពឹងទុក)
+   - ជំហានទី ៣ មេរៀនថ្មី (ខ្លឹមសារមេរៀនលម្អិត សកម្មភាពគ្រូដឹកនាំ និងសកម្មភាពសិស្សអនុវត្ត)
+   - ជំហានទី ៤ ពង្រឹងពុទ្ធិ (សំណួរសង្ខេប លំហាត់ពង្រឹង ឬការវាយតម្លៃ)
+   - ជំហានទី ៥ បណ្ដាំផ្ញើ និងកិច្ចការផ្ទះ (ផ្តល់កិច្ចការផ្ទះ និងបណ្តាំផ្ញើ)
+
+៥. ប្រសិនបើមាន «ខ្លឹមសារមេរៀនជាក់ស្ដែង ឬ ឯកសារយោងពីសៀវភៅពុម្ព» ផ្ញើមកជាមួយ អ្នកត្រូវតែយកខ្លឹមសារ និយមន័យ រូបមន្ត និងលំហាត់នោះមកដាក់ក្នុងជំហានទី២ ទី៣ និងទី៤ ឱ្យត្រឹមត្រូវ ១០០%។`;
+
+    let promptText = `សូមបង្កើតកិច្ចតែងការបង្រៀនតាមទិន្នន័យជាក់លាក់ដូចខាងក្រោម៖
+- កាលបរិច្ឆេទ៖ ${date || 'ថ្ងៃនេះ'}
+- រយៈពេលបង្រៀន៖ ${duration || 50} នាទី
 - មុខវិជ្ជា៖ ${subject}
-- កម្រិតថ្នាក់៖ ${grade} ${class_section ? `(${class_section})` : ''}
-- ម៉ោងបង្រៀន៖ ${period || 'ម៉ោងទី១'} (រយៈពេល ${duration || 50} នាទី)
-- កាលបរិច្ឆេទ៖ ${teaching_date || 'ថ្ងៃនេះ'}
+- ថ្នាក់ទី៖ ${grade}
 - ជំពូកទី៖ ${chapter || 'ទូទៅ'}
-- ចំណងជើងមេរៀន៖ ${lesson_title}
-- ខ្លឹមសាររង / ចំណុចសំខាន់៖ ${sub_topics || 'តាមខ្លឹមសារមេរៀន'}
-- វិធីសាស្ត្របង្រៀនចម្បង៖ ${teaching_method || 'សិស្សមជ្ឈមណ្ឌល និងការសហការជាក្រុម'}
-- ឧបករណ៍បច្ចេកវិទ្យា & សម្ភារឧបទេស៖ ${tech_tools || 'សៀវភៅពុម្ព បន្ទាត់ ផ្ទាំងរូបភាព'}
-- ឯកសារយោង / សៀវភៅពុម្ព៖ ${textbook_ref || 'សៀវភៅពុម្ពក្រសួងអប់រំ យុវជន និងកីឡា'}
-- ចំណុចសំខាន់បន្ថែម៖ ${notes || 'គ្មាន'}`;
+- មេរៀនទី៖ ${lesson_title}
+- ផ្នែកទី៖ ${section || 'ចំណុចសំខាន់'}
+- ទំព័រ៖ ${page || 'តាមសៀវភៅពុម្ព'}
+- វិធីសាស្ត្របង្រៀន៖ ${teaching_method || 'វិធីសាស្ត្រសិស្សមជ្ឈមណ្ឌល'}
+- សម្ភារឧបទេសគ្រូ៖ ${materials_teacher || 'សៀវភៅពុម្ព, ស្លាយមេរៀន, កុំព្យូទ័រ ហ្វឺត'}
+- សម្ភារឧបទេសសិស្ស៖ ${materials_student || 'សៀវភៅពុម្ព កុំព្យូទ័រ ប៊ិច សៀវភៅសរសេរ'}`;
 
     if (lesson_content && lesson_content.trim().length > 0) {
-      promptText += `\n\n====================\n📖 ខ្លឹមសារមេរៀនជាក់ស្ដែងពីសៀវភៅពុម្ព ឬ ឯកសារយោង (REFERENCE CONTENT)៖\n${lesson_content}\n====================\nសូមយកខ្លឹមសារ និយមន័យ រូបមន្ត និងទិន្នន័យជាក់ស្ដែងខាងលើនេះ ទៅរៀបចំជាខ្លឹមសារមេរៀន សំណួរ-ចម្លើយ និងលំហាត់ក្នុងជំហានទី២ ទី៣ និងទី៤ ឱ្យបានត្រឹមត្រូវនិងស៊ីជម្រៅបំផុត។`;
+      promptText += `\n\n====================\n📖 ខ្លឹមសារមេរៀនជាក់ស្ដែងពីសៀវភៅពុម្ព / ឯកសារយោង (REFERENCE CONTENT)៖\n${lesson_content}\n====================\nសូមយកខ្លឹមសារខាងលើនេះ ទៅរៀបចំជាខ្លឹមសារមេរៀន សកម្មភាពគ្រូ និងសកម្មភាពសិស្ស ឱ្យបានពេញលេញ ត្រឹមត្រូវ និងស៊ីជម្រៅបំផុត។`;
     }
 
     const payload = {
@@ -102,23 +118,19 @@ module.exports = async (req, res) => {
             objectives: {
               type: 'OBJECT',
               properties: {
-                knowledge: { type: 'STRING', description: 'ចំណេះដឹងដែលសិស្សទទួលបាន' },
-                skills: { type: 'STRING', description: 'បំណិន និងការអនុវត្តជាក់ស្ដែង' },
-                attitudes: { type: 'STRING', description: 'ឥរិយាបថ និងគុណតម្លៃ' }
+                knowledge: { type: 'STRING', description: 'វិជ្ជាសម្បទា' },
+                skills: { type: 'STRING', description: 'បំណិនសម្បទា' },
+                attitudes: { type: 'STRING', description: 'ចរិយាសម្បទា' }
               },
               required: ['knowledge', 'skills', 'attitudes']
             },
             materials: {
               type: 'OBJECT',
               properties: {
-                teacher: { type: 'STRING', description: 'សម្ភារឧបទេស និងបច្ចេកវិទ្យាសម្រាប់គ្រូ' },
-                student: { type: 'STRING', description: 'សម្ភារឧបទេសសម្រាប់សិស្ស' }
+                teacher: { type: 'STRING', description: 'សម្ភារឧបទេសគ្រូ' },
+                student: { type: 'STRING', description: 'សម្ភារឧបទេសសិស្ស' }
               },
               required: ['teacher', 'student']
-            },
-            teaching_methods: {
-              type: 'STRING',
-              description: 'វិធីសាស្ត្របង្រៀនដែលបានអនុវត្តក្នុងមេរៀននេះ'
             },
             steps: {
               type: 'ARRAY',
@@ -127,32 +139,30 @@ module.exports = async (req, res) => {
                 type: 'OBJECT',
                 properties: {
                   step_number: { type: 'INTEGER' },
-                  step_title: { type: 'STRING' },
-                  time_allocated: { type: 'STRING' },
+                  step_title: { type: 'STRING', description: 'ឧ. ជំហានទី ១ លំនឹងថ្នាក់' },
                   activities: {
                     type: 'ARRAY',
                     items: {
                       type: 'OBJECT',
                       properties: {
-                        content: { type: 'STRING', description: 'ខ្លឹមសារមេរៀន' },
                         teacher_activity: { type: 'STRING', description: 'សកម្មភាពគ្រូ' },
+                        content: { type: 'STRING', description: 'ខ្លឹមសារមេរៀន' },
                         student_activity: { type: 'STRING', description: 'សកម្មភាពសិស្ស' }
                       },
-                      required: ['content', 'teacher_activity', 'student_activity']
+                      required: ['teacher_activity', 'content', 'student_activity']
                     }
                   }
                 },
-                required: ['step_number', 'step_title', 'time_allocated', 'activities']
+                required: ['step_number', 'step_title', 'activities']
               }
             }
           },
-          required: ['objectives', 'materials', 'teaching_methods', 'steps']
+          required: ['objectives', 'materials', 'steps']
         },
         temperature: 0.3
       }
     };
 
-    // បញ្ជី Model តាមលំដាប់អាទិភាព
     const candidateModels = ['gemini-3.5-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
     let lastError = null;
     let data = null;
@@ -195,20 +205,18 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       success: true,
       meta: {
-        teacher_name: teacher_name || '',
-        school_name: school_name || 'វិទ្យាល័យ ហ៊ុន សែន សេរីភាព',
+        date: date || new Date().toLocaleDateString('km-KH'),
+        duration: duration || 50,
         subject,
         grade,
-        class_section: class_section || '',
-        period: period || 'ម៉ោងទី១',
-        duration: duration || 50,
-        teaching_date: teaching_date || new Date().toLocaleDateString('km-KH'),
         chapter: chapter || 'ទូទៅ',
         lesson_title,
-        sub_topics: sub_topics || '',
-        teaching_method: teaching_method || lessonPlanData.teaching_methods || '',
-        tech_tools: tech_tools || '',
-        textbook_ref: textbook_ref || ''
+        section: section || '',
+        page: page || '',
+        teaching_method: teaching_method || 'វិធីសាស្ត្រសិស្សមជ្ឈមណ្ឌល',
+        materials_teacher: materials_teacher || lessonPlanData.materials?.teacher || '',
+        materials_student: materials_student || lessonPlanData.materials?.student || '',
+        teacher_name: teacher_name || ''
       },
       data: lessonPlanData
     });

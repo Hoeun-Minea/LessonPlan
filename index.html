@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ប្រព័ន្ធរៀបចំកិច្ចតែងការបង្រៀនស្វ័យប្រវត្តិ - Gemini AI (MoEYS Standard)</title>
+  <title>កិច្ចតែងការបង្រៀន - វិទ្យាល័យ ហ៊ុន សែន សេរីភាព (AI)</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Moul & Kantumruy Pro -->
@@ -19,7 +19,7 @@
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-kantumruy">
 
   <!-- Top Navbar -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3 rtl:space-x-reverse">
         <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-md">
@@ -27,7 +27,7 @@
         </div>
         <div>
           <h1 class="font-moul text-blue-900 text-sm sm:text-base leading-tight">ប្រព័ន្ធរៀបចំកិច្ចតែងការបង្រៀន AI</h1>
-          <p class="text-xs text-slate-500">ស្តង់ដារក្រសួងអប់រំ យុវជន និងកីឡា (សាលារៀនជំនាន់ថ្មី NGS)</p>
+          <p class="text-xs text-slate-500">គំរូផ្លូវការ វិទ្យាល័យ ហ៊ុន សែន សេរីភាព (វិ.ហ.ស.សេរីភាព)</p>
         </div>
       </div>
       <div class="flex items-center space-x-2">
@@ -45,8 +45,8 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       
-      <!-- Left Column: Rich Input Form (5 Cols) -->
-      <div class="lg:col-span-5 space-y-4">
+      <!-- Left Column: Input Form (5 Cols) -->
+      <div class="lg:col-span-5 space-y-4 no-print">
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
           <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
             <h2 class="font-moul text-sm text-slate-800 flex items-center">
@@ -67,126 +67,99 @@
 
           <form id="lessonForm" class="space-y-4 text-sm">
             
-            <!-- Section 1: Teacher & School -->
+            <!-- Section 1: Meta -->
             <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200 space-y-3">
-              <p class="font-bold text-xs text-blue-900 uppercase tracking-wide">១. ព័ត៌មានសាលា និងគ្រូបង្រៀន</p>
+              <p class="font-bold text-xs text-blue-900 uppercase tracking-wide">១. ព័ត៌មានក្បាលកិច្ចតែងការ</p>
+              
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-medium text-slate-700 text-xs mb-1">ឈ្មោះគ្រូបង្រៀន</label>
-                  <input type="text" id="teacher_name" placeholder="ឧ. ហឿន មិនា" 
-                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
+                  <label class="block font-medium text-slate-700 text-xs mb-1">កាលបរិច្ឆេទ</label>
+                  <input type="text" id="date" placeholder="ឧ. ថ្ងៃទី... ខែ... ឆ្នាំ..." 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 text-xs mb-1">ឈ្មោះសាលារៀន</label>
-                  <input type="text" id="school_name" value="វិទ្យាល័យ ហ៊ុន សែន សេរីភាព" 
-                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
+                  <label class="block font-medium text-slate-700 text-xs mb-1">រយៈពេលបង្រៀន (នាទី)</label>
+                  <input type="number" id="duration" value="50" min="15" max="180" 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
                 </div>
               </div>
-            </div>
 
-            <!-- Section 2: Subject & Schedule -->
-            <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200 space-y-3">
-              <p class="font-bold text-xs text-blue-900 uppercase tracking-wide">២. មុខវិជ្ជា និងពេលវេលា</p>
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label class="block font-medium text-slate-700 text-xs mb-1">មុខវិជ្ជា <span class="text-red-500">*</span></label>
                   <input type="text" id="subject" required placeholder="ឧ. រូបវិទ្យា" 
-                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm font-semibold text-blue-900">
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm font-bold text-blue-900">
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 text-xs mb-1">កម្រិតថ្នាក់ <span class="text-red-500">*</span></label>
-                  <select id="grade" class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm font-medium">
-                    <option value="ថ្នាក់ទី៧">ថ្នាក់ទី៧</option>
-                    <option value="ថ្នាក់ទី៨">ថ្នាក់ទី៨</option>
-                    <option value="ថ្នាក់ទី៩">ថ្នាក់ទី៩</option>
-                    <option value="ថ្នាក់ទី១០">ថ្នាក់ទី១០</option>
-                    <option value="ថ្នាក់ទី១១" selected>ថ្នាក់ទី១១</option>
-                    <option value="ថ្នាក់ទី១២">ថ្នាក់ទី១២</option>
-                  </select>
+                  <label class="block font-medium text-slate-700 text-xs mb-1">ថ្នាក់ទី <span class="text-red-500">*</span></label>
+                  <input type="text" id="grade" required placeholder="ឧ. ថ្នាក់ទី១១ (១១ក)" 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
                 </div>
               </div>
 
-              <div class="grid grid-cols-3 gap-2">
+              <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-medium text-slate-700 text-xs mb-1">បន្ទប់ / ថ្នាក់</label>
-                  <input type="text" id="class_section" placeholder="ឧ. ១១ក" 
-                    class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
+                  <label class="block font-medium text-slate-700 text-xs mb-1">ជំពូកទី</label>
+                  <input type="text" id="chapter" placeholder="ឧ. ជំពូកទី២៖ ច្បាប់ញូតុន" 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 text-xs mb-1">ម៉ោងបង្រៀន</label>
-                  <input type="text" id="period" value="ម៉ោងទី១" placeholder="ឧ. ម៉ោងទី១" 
-                    class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
+                  <label class="block font-medium text-slate-700 text-xs mb-1">មេរៀនទី <span class="text-red-500">*</span></label>
+                  <input type="text" id="lesson_title" required placeholder="ឧ. មេរៀនទី១៖ ច្បាប់ទី២ញូតុន" 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm font-semibold">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-medium text-slate-700 text-xs mb-1">ផ្នែកទី</label>
+                  <input type="text" id="section" placeholder="ឧ. ច្បាប់ទី២ញូតុន (F = ma)" 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 text-xs mb-1">រយៈពេល (នាទី)</label>
-                  <input type="number" id="duration" value="50" min="15" max="180" 
-                    class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
+                  <label class="block font-medium text-slate-700 text-xs mb-1">ទំព័រ</label>
+                  <input type="text" id="page" placeholder="ឧ. ទំព័រ ៤២-៤៦" 
+                    class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
                 </div>
-              </div>
-
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">កាលបរិច្ឆេទបង្រៀន</label>
-                <input type="date" id="teaching_date" 
-                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
-              </div>
-            </div>
-
-            <!-- Section 3: Topic & Pedagogy -->
-            <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200 space-y-3">
-              <p class="font-bold text-xs text-blue-900 uppercase tracking-wide">៣. ខ្លឹមសារមេរៀន និងវិធីសាស្ត្របង្រៀន</p>
-              
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">ជំពូកទី</label>
-                <input type="text" id="chapter" placeholder="ឧ. ជំពូកទី២៖ ច្បាប់ចលនារបស់ញូតុន" 
-                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
-              </div>
-
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">ចំណងជើងមេរៀន <span class="text-red-500">*</span></label>
-                <input type="text" id="lesson_title" required placeholder="ឧ. ច្បាប់ទី២ញូតុន (F = ma)" 
-                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm font-semibold">
-              </div>
-
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">ខ្លឹមសាររង / ចំណុចសំខាន់ៗ</label>
-                <input type="text" id="sub_topics" placeholder="ឧ. ១. និយមន័យកម្លាំង ២. ទំនាក់ទំនងកម្លាំង ម៉ាស និងសំទុះ ៣. រូបមន្ត F = ma" 
-                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
               </div>
 
               <div>
                 <label class="block font-medium text-slate-700 text-xs mb-1">វិធីសាស្ត្របង្រៀន</label>
-                <select id="teaching_method" class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
-                  <option value="វិធីសាស្ត្រសិស្សមជ្ឈមណ្ឌល និងការសហការជាក្រុម">សិស្សមជ្ឈមណ្ឌល និងការងារក្រុម (Collaborative Learning)</option>
-                  <option value="វិធីសាស្ត្របង្រៀនតាមបែបការស្រាវជ្រាវ (5E Inquiry-based Learning)">ការស្រាវជ្រាវបែប 5E (Inquiry-based)</option>
-                  <option value="វិធីសាស្ត្របង្រៀនតាមបែប STEM / STEAM">វិធីសាស្ត្របង្រៀនតាមបែប STEM</option>
-                  <option value="វិធីសាស្ត្របង្រៀនដោះស្រាយបញ្ហា (Problem-Based Learning)">ការដោះស្រាយបញ្ហា (Problem-based)</option>
-                  <option value="វិធីសាស្ត្រពិសោធន៍ និងការអនុវត្តជាក់ស្ដែង (Hands-on Lab)">ការពិសោធន៍ជាក់ស្តែង (Hands-on Lab)</option>
-                  <option value="វិធីសាស្ត្របង្រៀនតាមរយៈគម្រោង (Project-Based Learning)">ការរៀនតាមគម្រោង (Project-based)</option>
-                </select>
+                <input type="text" id="teaching_method" value="វិធីសាស្ត្រសិស្សមជ្ឈមណ្ឌល និងការស្រាវជ្រាវ (5E)" 
+                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
               </div>
 
               <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">ឧបករណ៍បច្ចេកវិទ្យា & សម្ភារឧបទេស</label>
-                <input type="text" id="tech_tools" placeholder="ឧ. LCD Projector, PhET Simulation, សន្លឹកកិច្ចការ, ឧបករណ៍វាស់កម្លាំង..." 
-                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
+                <label class="block font-medium text-slate-700 text-xs mb-1">ឈ្មោះគ្រូបង្រៀន (សម្រាប់ចុះហត្ថលេខា)</label>
+                <input type="text" id="teacher_name" placeholder="ឧ. ហឿន មិនា" 
+                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
               </div>
             </div>
 
-            <!-- Section 4: References & File Upload (PDF, Word, TXT) -->
+            <!-- Section 2: Materials -->
+            <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200 space-y-3">
+              <p class="font-bold text-xs text-blue-900 uppercase tracking-wide">២. សម្ភារឧបទេស</p>
+              <div>
+                <label class="block font-medium text-slate-700 text-xs mb-1">គ្រូ</label>
+                <input type="text" id="materials_teacher" value="សៀវភៅពុម្ព, ស្លាយមេរៀន, កុំព្យូទ័រ ហ្វឺត" 
+                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 text-xs mb-1">សិស្ស</label>
+                <input type="text" id="materials_student" value="សៀវភៅពុម្ព កុំព្យូទ័រ ប៊ិច សៀវភៅសរសេរ" 
+                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-xs">
+              </div>
+            </div>
+
+            <!-- Section 3: References & File Upload -->
             <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 space-y-3">
               <div class="flex items-center justify-between">
                 <p class="font-bold text-xs text-emerald-900 uppercase tracking-wide flex items-center">
-                  <span class="mr-1.5">📖</span> ៤. ឯកសារយោង & ខ្លឹមសារមេរៀនជាក់ស្ដែង
+                  <span class="mr-1.5">📖</span> ៣. ឯកសារយោង & ខ្លឹមសារមេរៀនជាក់ស្ដែង
                 </p>
                 <span class="text-[10px] bg-emerald-200/80 text-emerald-900 px-2 py-0.5 rounded-full font-bold">
                   PDF / Word / Text
                 </span>
-              </div>
-              
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">ប្រភពសៀវភៅពុម្ព / ឯកសារយោង</label>
-                <input type="text" id="textbook_ref" placeholder="ឧ. សៀវភៅពុម្ពក្រសួងអប់រំ យុវជន និងកីឡា ថ្នាក់ទី១១ ទំព័រ ៤៥-៤៨" 
-                  class="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 text-xs sm:text-sm">
               </div>
 
               <!-- Upload Drag & Drop Area -->
@@ -213,13 +186,13 @@
               <!-- Textarea for Extracted / Pasted Content -->
               <div>
                 <label class="block font-medium text-slate-700 text-xs mb-1">
-                  ខ្លឹមសារមេរៀនជាក់ស្ដែងដែលបានស្រង់ចេញ (ឬអាច Paste បន្ថែម)
+                  ខ្លឹមសារមេរៀនជាក់ស្ដែង (អាច Paste បន្ថែម)
                 </label>
                 <textarea id="lesson_content" rows="4" 
-                  placeholder="អត្ថបទពីឯកសារ PDF ឬ Word នឹងត្រូវទាញយកមកដាក់ក្នុងប្រអប់នេះដោយស្វ័យប្រវត្តិ។ អ្នកក៏អាច Paste និយមន័យ រូបមន្ត ឬអត្ថបទមេរៀនបន្ថែមដោយផ្ទាល់បានផងដែរ..." 
+                  placeholder="អត្ថបទពីសៀវភៅពុម្ព PDF ឬ Word នឹងត្រូវទាញយកមកដាក់ក្នុងប្រអប់នេះ... AI នឹងយកខ្លឹមសារនេះទៅរៀបចំជាកិច្ចតែងការឱ្យត្រូវនឹងសៀវភៅពុម្ព ១០០%!" 
                   class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 text-xs leading-relaxed"></textarea>
                 <div class="flex items-center justify-between text-[11px] text-emerald-700 mt-0.5">
-                  <span>✨ AI នឹងផ្អែកលើខ្លឹមសារនេះ ១០០% ដើម្បីរៀបចំកិច្ចតែងការឱ្យត្រូវនឹងមេរៀនពិត</span>
+                  <span>✨ AI នឹងរៀបចំសកម្មភាពគ្រូ-សិស្ស និងពុទ្ធិតាមខ្លឹមសារនេះ</span>
                   <span id="charCount" class="text-slate-400">0 តួអក្សរ</span>
                 </div>
               </div>
@@ -234,101 +207,119 @@
         </div>
       </div>
 
-      <!-- Right Column: Live Preview & Actions (7 Cols) -->
+      <!-- Right Column: Live Preview (Matching Official HSSH Template) -->
       <div class="lg:col-span-7 space-y-4">
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-7">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100 no-print">
             <h2 class="font-moul text-sm text-slate-800 flex items-center">
               <span class="mr-2">📄</span> ផ្ទាំងមើលគំរូកិច្ចតែងការ (Preview)
             </h2>
             <div id="actionButtons" class="hidden flex items-center space-x-2">
-              <button id="btnExportDocx" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-medium shadow-sm transition">
+              <button id="btnExportDocx" class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-medium shadow-sm transition">
                 📥 ទាញយកជា Word (.docx)
               </button>
-              <button id="btnPrint" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-800 text-white text-xs sm:text-sm font-medium shadow-sm transition">
-                🖨️ បោះពុម្ព
+              <button id="btnPrint" class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-medium shadow-sm transition">
+                🖨️ បោះពុម្ព (Print / PDF)
               </button>
             </div>
           </div>
 
           <!-- Loading Indicator -->
-          <div id="loadingArea" class="hidden py-16 text-center space-y-3">
+          <div id="loadingArea" class="hidden py-16 text-center space-y-3 no-print">
             <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
-            <p class="font-medium text-slate-700">Gemini 3.5 Flash កំពុងរៀបចំកិច្ចតែងការតាមស្ដង់ដារគរុកោសល្យ...</p>
+            <p class="font-medium text-slate-700">Gemini 3.5 Flash កំពុងរៀបចំកិច្ចតែងការតាមទម្រង់ផ្លូវការ...</p>
             <p class="text-xs text-slate-400">ដំណើរការនេះចំណាយពេលប្រហែល ៣ ទៅ ៦ វិនាទី</p>
           </div>
 
           <!-- Empty State -->
-          <div id="emptyArea" class="py-20 text-center text-slate-400 space-y-3">
+          <div id="emptyArea" class="py-20 text-center text-slate-400 space-y-3 no-print">
             <div class="text-5xl">📋</div>
             <p class="font-medium text-slate-600">មិនទាន់មានទិន្នន័យនៅឡើយទេ</p>
-            <p class="text-xs max-w-sm mx-auto">សូមបំពេញព័ត៌មាន ឬ Upload ឯកសារមេរៀនខាងឆ្វេង រួចចុច "បង្កើតកិច្ចតែងការបង្រៀនដោយ AI"</p>
+            <p class="text-xs max-w-sm mx-auto">សូមបំពេញព័ត៌មានខាងឆ្វេងដៃ ឬជ្រើសរើស "គំរូរហ័ស" រួចចុច "បង្កើតកិច្ចតែងការបង្រៀនដោយ AI"</p>
           </div>
 
-          <!-- Lesson Plan Render Container (Hidden by default) -->
-          <div id="previewContent" class="hidden space-y-5 text-sm text-slate-800 print-area">
+          <!-- Lesson Plan Render Container (100% Matching Official Template) -->
+          <div id="previewContent" class="hidden space-y-4 text-sm text-slate-900 print-area">
             
-            <!-- Header Template -->
-            <div class="text-center space-y-1 pb-2">
-              <h3 class="font-moul text-sm sm:text-base text-slate-900">ព្រះរាជាណាចក្រកម្ពុជា</h3>
-              <h4 class="font-moul text-xs sm:text-sm text-slate-900">ជាតិ សាសនា ព្រះមហាក្សត្រ</h4>
-              <p class="text-xs font-semibold tracking-widest text-slate-400">3 3 3</p>
-              <div class="pt-2">
-                <h2 class="font-moul text-base sm:text-lg text-blue-900">កិច្ចតែងការបង្រៀន</h2>
+            <!-- Document Title -->
+            <div class="text-center pb-2">
+              <h2 class="font-moul text-base sm:text-xl text-slate-900 tracking-wide">កិច្ចតែងការបង្រៀន</h2>
+            </div>
+
+            <!-- Meta details (Key-Value Format) -->
+            <div class="space-y-1 text-xs sm:text-sm leading-relaxed border-b border-slate-200 pb-3">
+              <div class="grid grid-cols-2 gap-x-4">
+                <p><span class="font-semibold text-slate-800">កាលបរិច្ឆេទ</span> ៖ <span id="prevDate"></span></p>
+                <p><span class="font-semibold text-slate-800">រយៈពេលបង្រៀន</span> ៖ <span id="prevDuration"></span> នាទី</p>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4">
+                <p><span class="font-semibold text-slate-800">មុខវិជ្ជា</span> ៖ <span id="prevSubject" class="font-bold"></span></p>
+                <p><span class="font-semibold text-slate-800">ថ្នាក់ទី</span> ៖ <span id="prevGrade" class="font-bold"></span></p>
+              </div>
+              <p><span class="font-semibold text-slate-800">ជំពូកទី</span> ៖ <span id="prevChapter"></span></p>
+              <p><span class="font-semibold text-slate-800">មេរៀនទី</span> ៖ <span id="prevTitle" class="font-bold text-blue-900"></span></p>
+              <p><span class="font-semibold text-slate-800">ផ្នែកទី</span> ៖ <span id="prevSection"></span></p>
+              <p><span class="font-semibold text-slate-800">ទំព័រ</span> ៖ <span id="prevPage"></span></p>
+              <p><span class="font-semibold text-slate-800">វិធីសាស្ត្របង្រៀន</span> ៖ <span id="prevMethod"></span></p>
+            </div>
+
+            <!-- Objectives Section (វិជ្ជាសម្បទា, បំណិនសម្បទា, ចរិយាសម្បទា) -->
+            <div class="space-y-1.5 pt-1">
+              <h3 class="font-moul text-xs sm:text-sm text-slate-900">វត្ថុបំណងនៃមេរៀន</h3>
+              <p class="text-xs sm:text-sm italic text-slate-700">បន្ទាប់ពីបញ្ចប់មេរៀន សិស្សនឹងអាច៖</p>
+              <div class="pl-2 space-y-1 text-xs sm:text-sm">
+                <p><span class="font-semibold text-slate-900">វិជ្ជាសម្បទា</span> ៖ <span id="prevKnowledge" class="leading-relaxed"></span></p>
+                <p><span class="font-semibold text-slate-900">បំណិនសម្បទា</span> ៖ <span id="prevSkills" class="leading-relaxed"></span></p>
+                <p><span class="font-semibold text-slate-900">ចរិយាសម្បទា</span> ៖ <span id="prevAttitudes" class="leading-relaxed"></span></p>
               </div>
             </div>
 
-            <!-- Meta details Grid -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs sm:text-sm grid grid-cols-2 gap-2 leading-relaxed">
-              <div><span class="font-semibold text-slate-600">សាលារៀន៖</span> <span id="prevSchool" class="font-medium"></span></div>
-              <div><span class="font-semibold text-slate-600">គ្រូបង្រៀន៖</span> <span id="prevTeacher" class="font-medium"></span></div>
-              <div><span class="font-semibold text-slate-600">មុខវិជ្ជា៖</span> <span id="prevSubject" class="font-bold text-blue-800"></span></div>
-              <div><span class="font-semibold text-slate-600">ថ្នាក់ទី៖</span> <span id="prevGrade" class="font-medium"></span></div>
-              <div><span class="font-semibold text-slate-600">ម៉ោងបង្រៀន៖</span> <span id="prevPeriod" class="font-medium"></span> (<span id="prevDuration"></span> នាទី)</div>
-              <div><span class="font-semibold text-slate-600">កាលបរិច្ឆេទ៖</span> <span id="prevDate" class="font-medium"></span></div>
-              <div class="col-span-2"><span class="font-semibold text-slate-600">ជំពូកទី៖</span> <span id="prevChapter" class="font-medium"></span></div>
-              <div class="col-span-2"><span class="font-semibold text-slate-600">មេរៀន / ខ្លឹមសារ៖</span> <span id="prevTitle" class="font-bold text-blue-900"></span></div>
-              <div id="prevSubTopicsWrapper" class="col-span-2"><span class="font-semibold text-slate-600">ខ្លឹមសាររង៖</span> <span id="prevSubTopics"></span></div>
-              <div id="prevMethodWrapper" class="col-span-2"><span class="font-semibold text-slate-600">វិធីសាស្ត្របង្រៀន៖</span> <span id="prevMethod"></span></div>
-              <div id="prevRefWrapper" class="col-span-2"><span class="font-semibold text-slate-600">ឯកសារយោង៖</span> <span id="prevRef" class="text-emerald-700 font-medium"></span></div>
-            </div>
-
-            <!-- Objectives -->
-            <div class="space-y-2">
-              <h4 class="font-moul text-xs text-blue-900 border-b pb-1">I. វត្ថុបំណង</h4>
-              <div class="pl-3 space-y-1.5 text-xs sm:text-sm">
-                <p>• <span class="font-semibold text-slate-800">ចំណេះដឹង៖</span> <span id="prevKnowledge" class="leading-relaxed"></span></p>
-                <p>• <span class="font-semibold text-slate-800">បំណិន៖</span> <span id="prevSkills" class="leading-relaxed"></span></p>
-                <p>• <span class="font-semibold text-slate-800">ឥរិយាបថ៖</span> <span id="prevAttitudes" class="leading-relaxed"></span></p>
+            <!-- Teaching Materials (គ្រូ, សិស្ស) -->
+            <div class="space-y-1 pt-1">
+              <h3 class="font-moul text-xs sm:text-sm text-slate-900">សម្ភារឧបទេស</h3>
+              <div class="pl-2 space-y-1 text-xs sm:text-sm">
+                <p><span class="font-semibold text-slate-900">គ្រូ</span> ៖ <span id="prevMatTeacher"></span></p>
+                <p><span class="font-semibold text-slate-900">សិស្ស</span> ៖ <span id="prevMatStudent"></span></p>
               </div>
             </div>
 
-            <!-- Materials -->
-            <div class="space-y-2">
-              <h4 class="font-moul text-xs text-blue-900 border-b pb-1">II. សម្ភារឧបទេស និងបច្ចេកវិទ្យា</h4>
-              <div class="pl-3 space-y-1.5 text-xs sm:text-sm">
-                <p>• <span class="font-semibold text-slate-800">សម្រាប់គ្រូ៖</span> <span id="prevMatTeacher" class="leading-relaxed"></span></p>
-                <p>• <span class="font-semibold text-slate-800">សម្រាប់សិស្ស៖</span> <span id="prevMatStudent" class="leading-relaxed"></span></p>
-              </div>
-            </div>
-
-            <!-- 5 Steps Table -->
-            <div class="space-y-2">
-              <h4 class="font-moul text-xs text-blue-900 border-b pb-1">III. ដំណើរការបង្រៀន (ដំណាក់កាល ៥ ជំហាន)</h4>
-              <div class="overflow-x-auto border border-slate-300 rounded-xl shadow-sm">
-                <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <!-- 5 Steps Table (សកម្មភាពគ្រូ | ខ្លឹមសារមេរៀន | សកម្មភាពសិស្ស) -->
+            <div class="space-y-1.5 pt-2">
+              <h3 class="font-moul text-xs sm:text-sm text-slate-900">ដំណើរការបង្រៀន</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm border border-slate-900 border-collapse">
                   <thead>
-                    <tr class="bg-slate-100 border-b border-slate-300 text-slate-700 font-semibold text-center">
-                      <th class="py-2 px-2 border-r border-slate-300 w-20">ពេលវេលា</th>
-                      <th class="py-2 px-3 border-r border-slate-300 w-1/4">ខ្លឹមសារមេរៀន</th>
-                      <th class="py-2 px-3 border-r border-slate-300 w-1/3">សកម្មភាពគ្រូ</th>
-                      <th class="py-2 px-3 w-1/3">សកម្មភាពសិស្ស</th>
+                    <tr class="bg-slate-100 border-b border-slate-900 font-bold text-center text-slate-900">
+                      <th class="py-2.5 px-3 border border-slate-900 w-1/3">សកម្មភាពគ្រូ</th>
+                      <th class="py-2.5 px-3 border border-slate-900 w-1/3">ខ្លឹមសារមេរៀន</th>
+                      <th class="py-2.5 px-3 border border-slate-900 w-1/3">សកម្មភាពសិស្ស</th>
                     </tr>
                   </thead>
                   <tbody id="stepsTableBody">
                     <!-- Dynamic Rows Inserted by JavaScript -->
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            <!-- Official Signatures Section (វិ.ហ.ស.សេរីភាព) -->
+            <div class="signature-section pt-6 mt-4 grid grid-cols-2 text-center text-xs sm:text-sm leading-relaxed">
+              <!-- Left: នាយកសាលា -->
+              <div class="space-y-1">
+                <p class="font-bold text-slate-900">បានឃើញ និងឯកភាព</p>
+                <p class="text-slate-700">វិ.ហ.ស.សេរីភាព, ថ្ងៃទី.......ខែ.......... ឆ្នាំ២០២...</p>
+                <p class="font-bold text-slate-900 pt-1">នាយកសាលា</p>
+                <div class="h-16"></div>
+              </div>
+
+              <!-- Right: ហត្ថលេខាគ្រូបង្រៀន -->
+              <div class="space-y-1">
+                <p class="text-transparent select-none">-</p>
+                <p class="text-slate-700">វិ.ហ.ស.សេរីភាព, ថ្ងៃទី.......ខែ.......... ឆ្នាំ២០២...</p>
+                <p class="font-bold text-slate-900 pt-1">ហត្ថលេខាគ្រូបង្រៀន</p>
+                <div class="h-16 flex items-end justify-center">
+                  <span id="prevTeacherSign" class="font-medium text-slate-800"></span>
+                </div>
               </div>
             </div>
 
@@ -340,7 +331,7 @@
   </main>
 
   <!-- Modal for API Key configuration -->
-  <div id="apiKeyModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="apiKeyModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100">
         <h3 class="font-moul text-sm text-slate-800">🔑 កំណត់ Gemini API Key</h3>
@@ -362,7 +353,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto no-print">
     <p>© 2026 វិទ្យាល័យ ហ៊ុន សែន សេរីភាព - កម្មវិធីសាលារៀនជំនាន់ថ្មី (NGS) | រៀបចំដោយ Gemini AI</p>
   </footer>
 
