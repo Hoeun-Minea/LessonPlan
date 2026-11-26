@@ -1,0 +1,24 @@
+{
+  "name": "khmer-lesson-plan-ai",
+  "version": "1.0.0",
+  "description": "ប្រព័ន្ធរៀបចំកិច្ចតែងការបង្រៀនស្វ័យប្រវត្តិតាមស្តង់ដារក្រសួងអប់រំ យុវជន និងកីឡា ដោយប្រើប្រាស់ Gemini AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "lesson-plan",
+    "moeys",
+    "cambodia",
+    "gemini-ai",
+    "vercel"
+  ],
+  "author": "Hun Sen Sereipheap High School - NGS",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "docx": "^9.1.1",
+    "express": "^4.21.2"
+  }
+}
